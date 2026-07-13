@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b1020">
+    <title th:text="#{login.title}">Sign in · Media Uploader</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="login-page">
+<main class="login-card">
+    <div class="brand-mark" aria-hidden="true">↑</div>
+    <p class="eyebrow" th:text="#{app.name}">Media Uploader</p>
+    <h1 th:text="#{login.heading}">Welcome back.</h1>
+    <p class="subtitle" th:text="#{login.subtitle}">Sign in once and this device will remember your access.</p>
+
+    <form th:action="@{/login}" method="post" class="login-form">
+        <label for="password" th:text="#{login.password}">Password</label>
+        <div class="password-row">
+            <input id="password" name="password" type="password" autocomplete="current-password"
+                   autofocus required placeholder="Enter password" th:placeholder="#{login.password.placeholder}">
+            <button class="show-password" type="button" aria-label="Show password"
+                    th:attr="aria-label=#{login.password.showLabel},data-show=#{login.password.show},data-hide=#{login.password.hide}"
+                    onclick="const p=document.getElementById('password');p.type=p.type==='password'?'text':'password';this.textContent=p.type==='password'?this.dataset.show:this.dataset.hide"
+                    th:text="#{login.password.show}">Show</button>
+        </div>
+        <p class="form-error" th:if="${invalidPassword}" th:text="#{login.error.invalidPassword}" role="alert"></p>
+        <button class="primary-button" type="submit" th:text="#{login.continue}">Continue</button>
+    </form>
+</main>
+</body>
+</html>

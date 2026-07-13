@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b1020">
+    <title th:text="#{upload.title}">Upload · Media Uploader</title>
+    <link rel="stylesheet" th:href="@{/webjars/dropzone/5.9.3/dist/min/dropzone.min.css}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <script th:src="@{/webjars/dropzone/5.9.3/dist/min/dropzone.min.js}" defer></script>
+    <script th:src="@{/js/upload.js}" defer></script>
+</head>
+<body class="upload-page">
+<main class="fullscreen-upload">
+    <form id="media-dropzone" class="dropzone upload-dropzone" th:action="@{/upload}"
+          method="post" enctype="multipart/form-data"
+          th:attr="data-completed=#{upload.completed},
+                   data-failed=#{upload.failed},
+                   data-network-error=#{upload.networkError},
+                   data-forbidden=#{upload.forbidden},
+                   data-invalid-type=#{upload.invalidType}">
+        <div class="dz-message upload-prompt">
+            <span class="upload-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>
+            </span>
+            <span class="drop-title" th:text="#{upload.choose}">Choose photos &amp; videos</span>
+            <span class="drop-help" th:text="#{upload.dropHelp}">Tap or drop files here</span>
+        </div>
+    </form>
+</main>
+</body>
+</html>
