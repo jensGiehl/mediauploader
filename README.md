@@ -15,6 +15,7 @@ The application stores a signed authentication token in an `HttpOnly` cookie, so
 - Multiple-file selection and upload progress
 - Disk-backed multipart processing for large files
 - Configurable upload directory and size limits
+- Optional weekly Telegram reminder when files are waiting on the server
 - Docker image publishing to GitHub Container Registry on pushes to `main` or `master`
 
 ## Run with Docker
@@ -90,8 +91,23 @@ The first package version can be private depending on the repository and organiz
 | `UPLOAD_COOKIE_SECRET` | required | Secret key used to sign authentication cookies; use a long random value |
 | `UPLOAD_DIRECTORY` | `Upload` | Directory in which uploaded files are stored; the Docker image sets this to `/data/uploads` |
 | `UPLOAD_SECURE_COOKIE` | `false` | Set to `true` when the application is served over HTTPS |
+| `TELEGRAM_ENABLED` | `false` | Enables the weekly Telegram upload reminder |
+| `TELEGRAM_BOT_TOKEN` | empty | Bot token from BotFather; required when Telegram is enabled |
+| `TELEGRAM_CHAT_ID` | empty | Target user, group, supergroup, or channel chat ID |
+| `TELEGRAM_API_BASE_URL` | `https://api.telegram.org` | Telegram Bot API base URL |
+| `TELEGRAM_CRON` | `0 0 20 * * WED` | Spring cron expression for Wednesday at 20:00 |
+| `TELEGRAM_ZONE` | `Europe/Berlin` | Time zone used to evaluate the reminder schedule |
+| `TELEGRAM_MESSAGE_TEMPLATE` | `Es gibt {0} Dateien auf dem Server.` | Message template; `{0}` is replaced with the file count |
 | `MAX_FILE_SIZE` | `10GB` | Maximum size of one uploaded file |
 | `MAX_REQUEST_SIZE` | `10GB` | Maximum size of the complete multipart request |
+
+The reminder only sends a message if the upload directory contains at least one regular file. For example:
+
+```bash
+-e TELEGRAM_ENABLED=true \
+-e TELEGRAM_BOT_TOKEN="123456:replace-with-your-token" \
+-e TELEGRAM_CHAT_ID="-1001234567890"
+```
 
 ## Run from source
 
