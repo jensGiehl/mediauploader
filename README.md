@@ -98,6 +98,8 @@ The first package version can be private depending on the repository and organiz
 | `TELEGRAM_CRON` | `0 0 20 * * WED` | Spring cron expression for Wednesday at 20:00 |
 | `TELEGRAM_ZONE` | `Europe/Berlin` | Time zone used to evaluate the reminder schedule |
 | `TELEGRAM_MESSAGE_TEMPLATE` | `Es gibt {0} Dateien auf dem Server.` | Message template; `{0}` is replaced with the file count |
+| `TELEGRAM_SCP_DIRECTORY` | required when Telegram is enabled | Upload directory on the server host used in the SCP download command; this can differ from `UPLOAD_DIRECTORY` inside Docker |
+| `TELEGRAM_SCP_DOMAIN` | required when Telegram is enabled | SSH destination used in the SCP download command, for example `media@example.com` |
 | `MAX_FILE_SIZE` | `10GB` | Maximum size of one uploaded file |
 | `MAX_REQUEST_SIZE` | `10GB` | Maximum size of the complete multipart request |
 
@@ -106,8 +108,12 @@ The reminder only sends a message if the upload directory contains at least one 
 ```bash
 -e TELEGRAM_ENABLED=true \
 -e TELEGRAM_BOT_TOKEN="123456:replace-with-your-token" \
--e TELEGRAM_CHAT_ID="-1001234567890"
+-e TELEGRAM_CHAT_ID="-1001234567890" \
+-e TELEGRAM_SCP_DIRECTORY="/srv/media-uploader/uploads" \
+-e TELEGRAM_SCP_DOMAIN="media@example.com"
 ```
+
+The Telegram message includes `scp media@example.com:/srv/media-uploader/uploads/* .` so all waiting files can be downloaded to the current local directory. `TELEGRAM_SCP_DIRECTORY` must refer to the directory on the server host. With Docker bind mounts, it is therefore usually different from the container path configured through `UPLOAD_DIRECTORY`.
 
 ## Run from source
 

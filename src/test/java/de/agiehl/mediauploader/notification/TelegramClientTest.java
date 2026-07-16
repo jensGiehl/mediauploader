@@ -40,6 +40,7 @@ class TelegramClientTest {
                 new AppProperties.Upload(Path.of("Upload")),
                 new AppProperties.Security("password", "secret", Duration.ofDays(1), false),
                 new AppProperties.Telegram(true, "123456:ABC", "-100123", URI.create("https://telegram.example"),
-                        "0 0 20 * * WED", "Europe/Berlin", "Es gibt {0} Dateien auf dem Server."));
+                        "0 0 20 * * WED", "Europe/Berlin", "Es gibt {0} Dateien auf dem Server.",
+                        "/srv/media-uploads", "media@example.com"));
     }
 }

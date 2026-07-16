@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,11 +21,16 @@ class UploadReminder {
 
     private final Path uploadDirectory;
     private final String messageTemplate;
+    private final String scpCommand;
     private final TelegramMessageSender messageSender;
 
     UploadReminder(AppProperties properties, TelegramMessageSender messageSender) {
+        AppProperties.Telegram telegram = properties.telegram();
+        Assert.hasText(telegram.scpDirectory(), "app.telegram.scp-directory must be set when Telegram is enabled");
+        Assert.hasText(telegram.scpDomain(), "app.telegram.scp-domain must be set when Telegram is enabled");
         this.uploadDirectory = properties.upload().directory().toAbsolutePath().normalize();
-        this.messageTemplate = properties.telegram().messageTemplate();
+        this.messageTemplate = telegram.messageTemplate();
+        this.scpCommand = "scp " + telegram.scpDomain() + ":" + telegram.scpDirectory() + "/* .";
         this.messageSender = messageSender;
     }
 
@@ -34,7 +40,9 @@ class UploadReminder {
         try {
             long fileCount = countFiles();
             if (fileCount > 0) {
-                messageSender.send(MessageFormat.format(messageTemplate, fileCount));
+                String reminder = MessageFormat.format(messageTemplate, fileCount);
+                messageSender.send(reminder + System.lineSeparator()
+                        + "Alle Dateien herunterladen:" + System.lineSeparator() + scpCommand);
                 LOGGER.info("Sent Telegram upload reminder for {} files", fileCount);
             }
         } catch (Exception exception) {
