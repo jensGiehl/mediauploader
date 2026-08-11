@@ -16,7 +16,6 @@ public record AppProperties(Upload upload, Security security, Telegram telegram)
     }
 
     public record Telegram(boolean enabled, String botToken, String chatId, URI apiBaseUrl,
-                           String cron, String zone, String messageTemplate, String scpDirectory,
-                           String scpDomain) {
+                           String cron, String zone, String messageTemplate) {
     }
 }

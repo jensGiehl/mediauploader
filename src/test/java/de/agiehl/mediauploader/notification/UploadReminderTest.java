@@ -28,10 +28,7 @@ class UploadReminderTest {
 
         reminder(uploadDirectory).checkUploads();
 
-        assertThat(messageSender.messages).containsExactly(String.join(System.lineSeparator(),
-                "Es gibt 2 Dateien auf dem Server.",
-                "Alle Dateien herunterladen:",
-                "scp media@example.com:/srv/media-uploads/* ."));
+        assertThat(messageSender.messages).containsExactly("Es gibt 2 Dateien auf dem Server.");
     }
 
     @Test
@@ -53,8 +50,7 @@ class UploadReminderTest {
                 new AppProperties.Upload(directory),
                 new AppProperties.Security("password", "secret", Duration.ofDays(1), false),
                 new AppProperties.Telegram(true, "token", "chat", URI.create("https://api.telegram.org"),
-                        "0 0 20 * * WED", "Europe/Berlin", "Es gibt {0} Dateien auf dem Server.",
-                        "/srv/media-uploads", "media@example.com"));
+                        "0 0 20 * * WED", "Europe/Berlin", "Es gibt {0} Dateien auf dem Server."));
         return new UploadReminder(properties, messageSender);
     }
 
