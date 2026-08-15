@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#0b1020">
     <title th:text="#{upload.title}">Upload · Media Uploader</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/webjars/dropzone/5.9.3/dist/min/dropzone.min.css}">
     <link rel="stylesheet" th:href="@{/css/app.css}">
     <script th:src="@{/webjars/dropzone/5.9.3/dist/min/dropzone.min.js}" defer></script>
@@ -18,7 +19,14 @@
                    data-failed=#{upload.failed},
                    data-network-error=#{upload.networkError},
                    data-forbidden=#{upload.forbidden},
-                   data-invalid-type=#{upload.invalidType}">
+                   data-invalid-type=#{upload.invalidType},
+                   data-result-success-title=#{upload.result.success.title},
+                   data-result-success-one=#{upload.result.success.one},
+                   data-result-success-many=#{upload.result.success.many},
+                   data-result-error-title=#{upload.result.error.title},
+                   data-result-error-none=#{upload.result.error.none},
+                   data-result-error-one=#{upload.result.error.one},
+                   data-result-error-many=#{upload.result.error.many}">
         <div class="dz-message upload-prompt">
             <span class="upload-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>
@@ -28,5 +36,18 @@
         </div>
     </form>
 </main>
+<div id="confetti" class="confetti" aria-hidden="true"></div>
+<dialog id="upload-result" class="result-dialog" aria-labelledby="result-title" aria-describedby="result-message">
+    <div class="result-symbol" aria-hidden="true">
+        <svg class="result-symbol-success" viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>
+        <svg class="result-symbol-error" viewBox="0 0 24 24"><path d="M12 8v5m0 3.2v.1M12 3l9 17H3L12 3Z"/></svg>
+    </div>
+    <h2 id="result-title"></h2>
+    <p id="result-message"></p>
+    <div id="failed-files" class="failed-files" hidden>
+        <ul id="failed-file-list"></ul>
+    </div>
+    <button id="result-ok" class="result-ok btn" type="button" th:text="#{upload.result.ok}">OK</button>
+</dialog>
 </body>
 </html>

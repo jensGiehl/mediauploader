@@ -13,6 +13,7 @@ The application stores a signed authentication token in an `HttpOnly` cookie, so
 - Shared-password authentication using Spring Security
 - Signed, persistent, `HttpOnly` authentication cookie
 - Multiple-file selection and upload progress
+- Confetti and a clear success or error summary after every upload batch
 - Disk-backed multipart processing for large files
 - Configurable upload directory and size limits
 - Optional weekly Telegram reminder when files are waiting on the server
@@ -70,16 +71,19 @@ Every push to `main` or `master` in [jensGiehl/mediauploader](https://github.com
 Pull and run the published image:
 
 ```bash
-docker pull ghcr.io/jensgiehl/mediauploader:latest
+docker rm -f media-uploader 2>/dev/null
 
 docker run -d \
   --name media-uploader \
-  -p 8080:8080 \
+  --pull=always \
+  -p 8089:8080 \
   -v "$(pwd)/uploads:/data/uploads" \
   -e UPLOAD_PASSWORD="choose-a-strong-password" \
   -e UPLOAD_COOKIE_SECRET="replace-with-a-long-random-secret" \
   ghcr.io/jensgiehl/mediauploader:latest
 ```
+
+Here, `8089` is the port on the host; the application continues to listen on port `8080` inside the container. The volume mapping keeps uploaded files in the host's `uploads` directory.
 
 The first package version can be private depending on the repository and organization settings. Change the package visibility in GitHub Packages if anonymous pulls should be allowed.
 
