@@ -115,7 +115,9 @@ The reminder only sends a message if the upload directory contains at least one 
 
 ## Run from source
 
-Requirements: Java 17 or newer. The Maven Wrapper is included, so a separate Maven installation is not required.
+Requirements: JDK 27. The Maven Wrapper downloads Maven 3.10.0, so a separate Maven installation is not required. The Docker build and runtime images also use Eclipse Temurin 27.
+
+The project uses Spring Boot 4.1.1, which manages the Spring, Security, Jackson, testing, and Maven plugin versions. Bootstrap 5.3.8 and Dropzone 5.9.3 are the latest stable WebJar releases; preview versions are excluded from dependency updates. Spring Boot currently documents compatibility through Java 26; Java 27 therefore requires verifying the build and application behavior when updating dependencies.
 
 Clone the repository:
 
@@ -141,6 +143,5 @@ $env:UPLOAD_COOKIE_SECRET = "replace-with-a-long-random-secret"
 Run tests and create the executable JAR:
 
 ```bash
-./mvnw clean test
-./mvnw package
+./mvnw clean verify
 ```

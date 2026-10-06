@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.1.0</version>
+        <version>4.1.1</version>
         <relativePath/>
     </parent>
 
@@ -16,7 +16,7 @@
     <description>Mobile-friendly photo and video upload application</description>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>27</java.version>
     </properties>
 
     <dependencies>
